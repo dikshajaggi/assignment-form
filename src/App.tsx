@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const handleFamilyInfoSubmit = (data: any) => {
     setFamilyData(data);
     setSubmittedData({ ...userData, ...data });
+    alert("data submitted successfully")
     console.log("Submitted data:", { ...userData, ...data });
   };
 
