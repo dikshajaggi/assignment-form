@@ -1,39 +1,25 @@
 import React from "react";
-import Input from "./Input";
+
+type FormValues = {
+    name: string;
+    email: string;
+    address: string;
+    phone: string;
+  };
 
 interface FormFieldProps {
-    placeholder: string;
-    name: string;
-    register: any;
     label: string;
-    error?: any | undefined;
-    property: string;
-    type: string
+    name: keyof FormValues;
+    register: any;
+    errors: any;
 }
 
-const FormField: React.FC<FormFieldProps> = ({ placeholder, name, register, error, label, property, type }) => {
-    // Define default validation rules
-    const validationRules: any = {};
+const FormField: React.FC<FormFieldProps> = ({ label, name, register, errors }) => (
+    <div className="flex flex-col">
+      <label className="text-white">{label}</label>
+      <input className="h-[40px] border border-gray-800 rounded-md px-2 w-[300px]" {...register(name, { required: true })} />
+      {errors[name] && <span className="text-red-400">This field is required</span>}
+    </div>
+  );
 
-    // If the field is required, add the required rule
-    if (property === "required") {
-        validationRules.required = { value: true, message: `${label} is required` };
-    }
-
-    // If the field is email, add email validation rule
-    if (name === 'email') {
-        validationRules.pattern = {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: "Invalid email address"
-        };
-    }
-
-    return (
-        <div className="flex flex-col">
-            <Input property={property} type={type} placeholder={placeholder} {...register(name, validationRules)} />
-            {error && <span className="text-red-400">{error?.message}</span>}
-        </div>
-    );
-};
-
-export default FormField
+  export default FormField
